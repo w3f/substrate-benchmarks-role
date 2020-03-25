@@ -1,5 +1,5 @@
 galaxy_info:
-  role_name: polkadot_module_benchmarks
+  role_name: 'polkadot-module-benchmarks'
   description: Downloads the substrate benchmarking binary on multiple machines, executes those and collects the results.
   author: Fabio Lama
   company: Web3 Foundation
