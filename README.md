@@ -1,9 +1,7 @@
-Role Name
+Polkadot Module Benchmarking
 =========
 
-This role remotely downloads the Substrate benchmarking binary, executes the benchmarks and collects the results locally. This role is idempotent and can be executed multiple times on the same machine(s).
-
-Results are saved locally in `results/` (directory will be created).
+This role downloads the benchmarking binary on the specified hosts, executes the benchmarks and collects the results locally in `results/` (directory will be created). This role is idempotent and can be executed multiple times on the same machine(s).
 
 Role Variables
 --------------
