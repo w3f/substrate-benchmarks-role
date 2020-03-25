@@ -1,0 +1,12 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - name: 'polkadot-module-benchmarks'
+    image: ubuntu:bionic
+provisioner:
+  name: ansible
+verifier:
+  name: ansible

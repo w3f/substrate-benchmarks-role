@@ -1,0 +1,9 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    - ansible_user: root
+  tasks:
+    - name: "Include polkadot-module-benchmarks"
+      include_role:
+        name: "polkadot-module-benchmarks"
