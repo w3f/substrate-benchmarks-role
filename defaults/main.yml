@@ -1,5 +1,5 @@
 ---
-substrate_binary_url: 'https://github.com/lamafab/substrate-graph-benchmarks/releases/download/v0.1.0/substrate'
+benchmarking_binary_url: 'https://github.com/lamafab/substrate-graph-benchmarks/releases/download/v0.1.0/substrate'
 benchmark_steps: 10
 benchmark_repeat: 10
 benchmarks:
@@ -67,4 +67,4 @@ benchmarks:
   - ['pallet-treasury', 'on_initialize']
 
 # Generally there's no reason to adjust this
-remote_work_dir: '/home/{{ansible_user}}/polkadot-benchmarking'
+remote_work_dir: '/home/{{ansible_user}}/polkadot-module-benchmarking'

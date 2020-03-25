@@ -26,13 +26,13 @@
 
 - name: download benchmarking tool
   get_url:
-    url: '{{substrate_binary_url}}'
-    dest: '{{remote_work_dir}}/substrate'
+    url: '{{benchmarking_binary_url}}'
+    dest: '{{remote_work_dir}}/benchmarking'
     mode: 'u+x'
 
-- name: check substrate benchmark availability
+- name: check benchmarking availability
   shell: |
-    {{remote_work_dir}}/substrate benchmark --version
+    {{remote_work_dir}}/benchmarking benchmark --version
 
 - name: collect date
   shell: date
@@ -57,7 +57,7 @@
 
 - name: run the benchmarks
   shell: |
-    {{remote_work_dir}}/substrate benchmark\
+    {{remote_work_dir}}/benchmarking benchmark\
       --chain dev\
       --execution=wasm\
       --wasm-execution=compiled\
