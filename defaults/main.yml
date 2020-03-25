@@ -67,4 +67,4 @@ benchmarks:
   - ['pallet-treasury', 'on_initialize']
 
 # Generally there's no reason to adjust this
-remote_work_dir: '/home/{{ansible_user}}/polkadot-module-benchmarking'
+remote_work_dir: '{{ansible_env.HOME}}/polkadot-module-benchmarking'
