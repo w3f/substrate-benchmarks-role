@@ -4,7 +4,7 @@ This role downloads the benchmarking binary on the specified hosts, executes the
 
 ## Role Variables
 
-The following variables can be adjusted in `defaults/main.yml`:
+The following variables can be adjusted in [defaults/main.yml](./defaults/main.yml):
 
 |Variable|Description|
 |-|-|
