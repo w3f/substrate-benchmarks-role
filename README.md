@@ -1,38 +1,31 @@
 Role Name
 =========
 
-A brief description of the role goes here.
+This role remotely downloads the Substrate benchmarking binary, executes the benchmarks and collects the results locally. This role is idempotent and can be executed multiple times on the same machine(s).
 
-Requirements
-------------
-
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+Results are saved locally in `results/` (directory will be created).
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+The following variables can be adjusted in `defaults/main.yml`:
 
-Dependencies
-------------
-
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+|Variable|Description|
+|-|-|
+|`substrate_binary_url`|Download location of the benchmarking binary.|
+|`benchmarks`|A list of the benchmarks to execute.|
+|`benchmark_steps`|The number of "steps" one should to take. This varies depending on the input paramters of the benchmark. For example, if the user count could be between 0 and 100, and one picks the `steps` to 10, it will run benchmarks at 0, 10, 20, 30, ... , 100.|
+|`benchmark_repeat`|The number of times to repeat the exact same benchmark with the exact same input parameters. Total number of benchmarks will be `steps` * `repeat`.|
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
     - hosts: servers
       roles:
-         - { role: username.rolename, x: 42 }
+         - 'polkadot-module-benchmarks'
 
 License
 -------
 
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+[BSD 3-Clause License](./LICENSE)
