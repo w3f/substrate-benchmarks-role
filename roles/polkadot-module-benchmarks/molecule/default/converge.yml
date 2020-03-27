@@ -4,4 +4,4 @@
   tasks:
     - name: "Include polkadot-module-benchmarks"
       include_role:
-        name: "polkadot-module-benchmarks"
+        name: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') | basename }}"

@@ -1,0 +1,44 @@
+version: 2
+
+jobs:
+  tests:
+    docker:
+      - image: w3f/molecule:v0.1.0
+    steps:
+      - checkout
+      - run:
+          name: Run tests
+          command: |
+            cd roles/polkadot-module-benchmarks
+            #molecule test
+            molecule syntax
+
+  publishRole:
+    docker:
+      - image: w3f/molecule:v0.1.0
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          command: |
+            collection_dir=$(pwd)
+            cd ..
+            tar -czf collection.tar.gz ${collection_dir}
+            ansible-galaxy collection publish ./collection.tar.gz --api-key $ANSIBLE_GALAXY_API_KEY
+
+workflows:
+  version: 2
+  test_and_deploy:
+    jobs:
+      - tests:
+          filters:
+            tags:
+              only: /.*/
+      - publishRole:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /v[0-9]+(\.[0-9]+)*/
+          requires:
+            - tests

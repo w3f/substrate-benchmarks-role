@@ -1,0 +1,18 @@
+namespace: "w3f"
+name: "polkadot_module_benchmarks"
+version: "0.1.0"
+readme: "README.md"
+description: "Downloads the substrate benchmarking binary on multiple machines, executes those and collects the results."
+authors:
+    - "Fabio Lama"
+license:
+    - "BSD-3-Clause"
+tags:
+    - polkadot
+    - substrate
+    - benchmarks
+    - weights
+    - parity
+    - w3f
+    - web3
+repository: "https://github.com/w3f/polkadot-benchmarking"
