@@ -1,7 +1,4 @@
 ---
-benchmarking_binary_url: 'https://github.com/lamafab/substrate-graph-benchmarks/releases/download/v0.1.0/substrate'
-benchmark_steps: 10
-benchmark_repeat: 10
 benchmarks:
   - ['pallet-balances', 'transfer'] # worst case
   - ['pallet-balances', 'transfer_best_case']
