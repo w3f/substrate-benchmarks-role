@@ -1,4 +1,17 @@
 ---
+- name: Run the equivalent of "apt-get update"
+  when: ansible_os_family == "Debian"
+  become: true
+  apt:
+    update_cache: yes
+
+- name: Upgrade all packages to the latest version
+  when: ansible_os_family == "Debian"
+  become: true
+  apt:
+    name: "*"
+    state: latest
+
 - name: install required software (Debian)
   when: ansible_os_family == "Debian"
   become: true
