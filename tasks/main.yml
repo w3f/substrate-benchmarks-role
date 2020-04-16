@@ -1,4 +1,5 @@
 ---
+# Setup the system. Upgrade and install required software
 - name: Run the equivalent of "apt-get update"
   when: ansible_os_family == "Debian"
   become: true
@@ -32,6 +33,7 @@
     state: latest
     update_cache: true
 
+# Prepare benchmarking tool
 - name: create working directory for benchmarking tool
   file:
     path: '{{remote_work_dir}}/results'
@@ -47,6 +49,7 @@
   shell: |
     {{remote_work_dir}}/bench-tool benchmark --version
 
+# Collect information about the machine
 - name: collect date
   shell: date
   register: info_date
@@ -68,21 +71,20 @@
     src: files/DEVICE_INFO.j2
     dest: '{{remote_work_dir}}/results/DEVICE_INFO.md'
 
-- name: run the benchmarks
-  shell: |
-    {{remote_work_dir}}/bench-tool benchmark\
-      --chain dev\
-      --execution=wasm\
-      --wasm-execution=compiled\
-      --pallet {{item[0]}}\
-      --extrinsic {{item[1]}}\
-      --steps {{benchmark_steps}}\
-      --repeat {{benchmark_repeat}} > {{remote_work_dir}}/results/{{item[0]}}.{{item[1]}}.txt
-  with_nested:
-    - '{{benchmarks}}'
-  async: 0
-  poll: 60
+# Run benchmarks depending on specified scope
+- name: run all benchmarks
+  import_task: benchmark_all.yml
+  when: pallet == "all"
 
+- name: run balances benchmarks
+  import_task: benchmark_balances.yml
+  when: pallet == "balances"
+
+- name: run staking benchmarks
+  import_task: benchmark_staking.yml
+  when: pallet == "staking"
+
+# Collect the results
 - name: create local directory for results
   file:
     path: 'results'
