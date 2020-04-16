@@ -1,0 +1,20 @@
+- name: run all benchmarks
+  shell: |
+    {{remote_work_dir}}/bench-tool benchmark\
+      --chain dev\
+      --execution=wasm\
+      --wasm-execution=compiled\
+      --pallet {{item[0]}}\
+      --extrinsic {{item[1]}}\
+      --steps {{benchmark_steps}}\
+      --repeat {{benchmark_repeat}} > {{remote_work_dir}}/results/{{item[0]}}.{{item[1]}}.txt
+  with_nested:
+    - '{{balances_benchmarks}}'
+    - '{{identity_benchmarks}}'
+    - '{{vesting_benchmarks}}'
+    - '{{timestamp_benchmarks}}'
+    - '{{staking_benchmarks}}'
+    - '{{im_online_benchmarks}}'
+    - '{{treasury_benchmarks}}'
+  async: 0
+  poll: 60

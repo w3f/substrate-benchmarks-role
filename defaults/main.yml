@@ -1,11 +1,12 @@
 ---
-benchmarks:
+balances_benchmarks:
   - ['pallet-balances', 'transfer'] # worst case
   - ['pallet-balances', 'transfer_best_case']
   - ['pallet-balances', 'transfer_keep_alive']
   - ['pallet-balances', 'set_balance']
   - ['pallet-balances', 'set_balance_killing']
-  #
+
+identity_benchmarks:
   - ['pallet-identity', 'add_registrar']
   - ['pallet-identity', 'set_identity']
   - ['pallet-identity', 'set_subs']
@@ -17,15 +18,18 @@ benchmarks:
   - ['pallet-identity', 'set_fields']
   - ['pallet-identity', 'provide_judgement']
   - ['pallet-identity', 'kill_identity']
-  #
+
+vesting_benchmarks:
   - ['pallet-vesting', 'vest_locked']
   - ['pallet-vesting', 'vest_not_locked']
   - ['pallet-vesting', 'vest_other_locked']
   - ['pallet-vesting', 'vest_other_not_locked']
   - ['pallet-vesting', 'vested_transfer']
-  #
+
+timestamp_benchmarks:
   - ['pallet-timestamp', 'set']
-  #
+
+staking_benchmarks:
   - ['pallet-staking', 'bond']
   - ['pallet-staking', 'bond_extra']
   - ['pallet-staking', 'unbond']
@@ -49,10 +53,12 @@ benchmarks:
   - ['pallet-staking', 'reap_stash']
   - ['pallet-staking', 'new_era']
   - ['pallet-staking', 'do_slash']
-  #
+
+im_online_benchmarks:
   - ['pallet-im-online', 'heartbeat']
   - ['pallet-im-online', 'validate_unsigned']
-  #
+
+treasury_benchmarks:
   - ['pallet-treasury', 'propose_spend']
   - ['pallet-treasury', 'reject_proposal']
   - ['pallet-treasury', 'approve_proposal']

@@ -73,16 +73,12 @@
 
 # Run benchmarks depending on specified scope
 - name: run all benchmarks
-  import_task: benchmark_all.yml
-  when: pallet == "all"
+  import_tasks: benchmark_all.yml
+  when: scope == "all"
 
-- name: run balances benchmarks
-  import_task: benchmark_balances.yml
-  when: pallet == "balances"
-
-- name: run staking benchmarks
-  import_task: benchmark_staking.yml
-  when: pallet == "staking"
+- name: run limited (balances & staking) benchmarks
+  import_tasks: benchmark_limited.yml
+  when: scope == "limited"
 
 # Collect the results
 - name: create local directory for results
