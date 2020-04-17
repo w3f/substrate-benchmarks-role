@@ -1,6 +1,6 @@
 - name: run all benchmarks
   shell: |
-    {{remote_work_dir}}/bench-tool benchmark\
+    {{ansible_env.HOME}}/bench-tool benchmark\
       --chain dev\
       --execution=wasm\
       --wasm-execution=compiled\
@@ -9,7 +9,7 @@
       --raw\
       --steps {{benchmark_steps}}\
       --repeat {{benchmark_repeat}}\
-      > {{remote_work_dir}}/results/{{item[0]}}.{{item[1]}}.txt
+      > {{ansible_env.HOME}}/results/{{item[0]}}.{{item[1]}}.txt
   with_nested:
     - '{{balances_benchmarks|
       union(identity_benchmarks)|
@@ -27,7 +27,7 @@
 
 - name: capture db logs of all benchmarks
   shell: |
-    {{remote_work_dir}}/bench-tool benchmark\
+    {{ansible_env.HOME}}/bench-tool benchmark\
       --chain dev\
       --execution=wasm\
       --wasm-execution=compiled\
@@ -35,7 +35,7 @@
       --extrinsic {{item[1]}}\
       --steps {{benchmark_steps}}\
       --log state-trace=trace,benchmark=trace\
-      2> {{remote_work_dir}}/results/{{item[0]}}.{{item[1]}}.log
+      2> {{ansible_env.HOME}}/results/{{item[0]}}.{{item[1]}}.log
   with_nested:
     - '{{balances_benchmarks|
       union(identity_benchmarks)|

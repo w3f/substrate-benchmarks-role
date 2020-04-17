@@ -36,18 +36,18 @@
 # Prepare benchmarking tool
 - name: create working directory for benchmarking tool
   file:
-    path: '{{remote_work_dir}}/results'
+    path: '{{ansible_env.HOME}}/results'
     state: directory
 
 - name: download benchmarking tool
   get_url:
     url: '{{benchmarking_binary_url}}'
-    dest: '{{remote_work_dir}}/bench-tool'
+    dest: '{{ansible_env.HOME}}/bench-tool'
     mode: 'u+x'
 
 - name: check benchmarking tool availability
   shell: |
-    {{remote_work_dir}}/bench-tool benchmark --version
+    {{ansible_env.HOME}}/bench-tool benchmark --version
 
 # Collect information about the machine
 - name: collect date
@@ -69,7 +69,7 @@
 - name: write collected info to file
   template:
     src: files/DEVICE_INFO.j2
-    dest: '{{remote_work_dir}}/results/DEVICE_INFO.md'
+    dest: '{{ansible_env.HOME}}/results/DEVICE_INFO.md'
 
 # Run benchmarks depending on specified scope
 - name: run all benchmarks
@@ -90,5 +90,5 @@
 - name: pull results from remote and save those locally in `results/`
   synchronize:
     mode: pull
-    src: '{{remote_work_dir}}/results/'
+    src: '{{ansible_env.HOME}}/results/'
     dest: 'results/host_{{ansible_host}}/'
