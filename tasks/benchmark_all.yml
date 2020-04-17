@@ -10,23 +10,8 @@
       --steps {{benchmark_steps}}\
       --repeat {{benchmark_repeat}}\
       > {{ansible_env.HOME}}/results/{{item[0]}}.{{item[1]}}.txt
-  with_nested:
-    - '{{balances_benchmarks|
-      union(identity_benchmarks)|
-      union(vesting_benchmarks)|
-      union(timestamp_benchmarks)|
-      union(staking_benchmarks)|
-      union(im_online_benchmarks)|
-      union(treasury_benchmarks)|
-      union(democracy_benchmarks)|
-      union(offences_benchmarks)|
-      union(session_benchmarks)|
-      union(utility_benchmarks)}}'
-  async: 0
-  poll: 60
 
-- name: capture db logs of all benchmarks
-  shell: |
+    # capture db logs
     {{ansible_env.HOME}}/bench-tool benchmark\
       --chain dev\
       --execution=wasm\
