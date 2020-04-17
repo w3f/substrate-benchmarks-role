@@ -17,7 +17,11 @@
       union(timestamp_benchmarks)|
       union(staking_benchmarks)|
       union(im_online_benchmarks)|
-      union(treasury_benchmarks)}}'
+      union(treasury_benchmarks)|
+      union(democracy_benchmarks)|
+      union(offences_benchmarks)|
+      union(session_benchmarks)|
+      union(utility_benchmarks)}}'
   async: 0
   poll: 60
 
@@ -39,6 +43,10 @@
       union(timestamp_benchmarks)|
       union(staking_benchmarks)|
       union(im_online_benchmarks)|
-      union(treasury_benchmarks)}}'
+      union(treasury_benchmarks)|
+      union(democracy_benchmarks)|
+      union(offences_benchmarks)|
+      union(session_benchmarks)|
+      union(utility_benchmarks)}}'
   async: 0
   poll: 60
