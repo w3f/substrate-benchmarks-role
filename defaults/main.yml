@@ -46,13 +46,13 @@ staking_benchmarks:
   - ['pallet-staking', 'set_invulnerables']
   - ['pallet-staking', 'force_unstake']
   - ['pallet-staking', 'cancel_deferred_slash']
-  - ['pallet-staking', 'payout_validator']
-  - ['pallet-staking', 'payout_nominator']
+  - ['pallet-staking', 'payout_stakers']
   - ['pallet-staking', 'rebond']
   - ['pallet-staking', 'set_history_depth']
   - ['pallet-staking', 'reap_stash']
   - ['pallet-staking', 'new_era']
   - ['pallet-staking', 'do_slash']
+  - ['pallet-staking', 'payout_all']
 
 im_online_benchmarks:
   - ['pallet-im-online', 'heartbeat']
