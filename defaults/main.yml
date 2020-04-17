@@ -107,5 +107,15 @@ session_benchmarks:
   - ['pallet-session-benchmarking', 'set_keys']
   - ['pallet-session-benchmarking', 'purge_keys']
 
+utility_benchmarks:
+  - ['pallet-utility', 'batch']
+  - ['pallet-utility', 'as_sub']
+  - ['pallet-utility', 'as_multi_create']
+  - ['pallet-utility', 'as_multi_approve']
+  - ['pallet-utility', 'as_multi_complete']
+  - ['pallet-utility', 'approve_as_multi_create']
+  - ['pallet-utility', 'approve_as_multi_approve']
+  - ['pallet-utility', 'cancel_as_multi']
+
 # Generally there's no reason to adjust this
 remote_work_dir: '{{ansible_env.HOME}}/polkadot-module-benchmarking'
