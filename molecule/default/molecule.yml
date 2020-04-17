@@ -5,7 +5,7 @@ driver:
   name: docker
 platforms:
   - name: 'polkadot-module-benchmarks'
-    image: ubuntu:bionic
+    image: ubuntu:19.10
 provisioner:
   name: ansible
 verifier:

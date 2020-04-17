@@ -6,8 +6,32 @@
       --wasm-execution=compiled\
       --pallet {{item[0]}}\
       --extrinsic {{item[1]}}\
+      --raw\
       --steps {{benchmark_steps}}\
-      --repeat {{benchmark_repeat}} > {{remote_work_dir}}/results/{{item[0]}}.{{item[1]}}.txt
+      --repeat {{benchmark_repeat}}\
+      > {{remote_work_dir}}/results/{{item[0]}}.{{item[1]}}.txt
+  with_nested:
+    - '{{balances_benchmarks|
+      union(identity_benchmarks)|
+      union(vesting_benchmarks)|
+      union(timestamp_benchmarks)|
+      union(staking_benchmarks)|
+      union(im_online_benchmarks)|
+      union(treasury_benchmarks)}}'
+  async: 0
+  poll: 60
+
+- name: capture db logs of all benchmarks
+  shell: |
+    {{remote_work_dir}}/bench-tool benchmark\
+      --chain dev\
+      --execution=wasm\
+      --wasm-execution=compiled\
+      --pallet {{item[0]}}\
+      --extrinsic {{item[1]}}\
+      --steps {{benchmark_steps}}\
+      --log state-trace=trace,benchmark=trace\
+      2> {{remote_work_dir}}/results/{{item[0]}}.{{item[1]}}.log
   with_nested:
     - '{{balances_benchmarks|
       union(identity_benchmarks)|
