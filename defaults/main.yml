@@ -99,9 +99,13 @@ democracy_benchmarks:
   - ['pallet-democracy', 'proxy_undelegate']
   - ['pallet-democracy', 'proxy_remove_vote']
 
-  offences_benchmarks:
+offences_benchmarks:
   - ['pallet-offences', 'report_offence']
   - ['pallet-offences', 'on_initialize']
+
+session_benchmarks:
+  - ['pallet-session-benchmarking', 'set_keys']
+  - ['pallet-session-benchmarking', 'purge_keys']
 
 # Generally there's no reason to adjust this
 remote_work_dir: '{{ansible_env.HOME}}/polkadot-module-benchmarking'
