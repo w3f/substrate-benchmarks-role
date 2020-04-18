@@ -40,3 +40,4 @@ jobs:
         upload_url: https://uploads.github.com/repos/w3f/substrate-benchmarks-role/releases/25646062/assets{?name,label}
         asset_path: substrate/target/release/substrate
         asset_name: substrate
+        asset_content_type: application/x-binary
