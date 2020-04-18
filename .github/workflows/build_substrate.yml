@@ -17,6 +17,12 @@ jobs:
         curl https://getsubstrate.io -sSf | bash -s -- --fast
         source ~/.cargo/env
 
+    - name: Cache cargo build
+      uses: actions/cache@v1
+      with:
+        path: substrate/target
+        key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
+
     - name: Clone substrate repo
       uses: actions/checkout@v2
       with:
@@ -25,12 +31,6 @@ jobs:
 
     - name: Build substrate repo with benchmarking feature
       run: cargo build --release --features=runtime-benchmarks --manifest-path substrate/bin/node/cli/Cargo.toml
-
-    - name: Cache cargo build
-      uses: actions/cache@v1
-      with:
-        path: substrate/target
-        key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
 
     - name: Upload Release Asset
       uses: actions/upload-release-asset@v1
