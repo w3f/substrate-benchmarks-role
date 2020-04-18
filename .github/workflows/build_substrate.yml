@@ -7,6 +7,9 @@ name: Build substrate with runtime-benchmarks feature enable, publish as artifac
 on:
   schedule:
     - cron: "0 0 * * *"
+  push:
+    branches:
+      - trigger-actions
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
