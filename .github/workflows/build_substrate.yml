@@ -26,8 +26,17 @@ jobs:
     - name: Build substrate repo with benchmarking feature
       run: cargo build --release --features=runtime-benchmarks --manifest-path substrate/bin/node/cli/Cargo.toml
 
-    - name: Publish substrate binary to Release
-      uses: actions/upload-artifact@v1
+    - name: Cache cargo build
+      uses: actions/cache@v1
       with:
-        name: substrate-benchmarking
-        path: substrate/target/release/substrate
+        path: substrate/target
+        key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
+
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: https://uploads.github.com/repos/w3f/substrate-benchmarks-role/releases/25646062/assets{?name,label}
+        asset_path: substrate/target/release/substrate
+        asset_name: substrate
