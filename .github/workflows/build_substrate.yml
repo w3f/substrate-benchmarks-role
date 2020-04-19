@@ -47,15 +47,14 @@ jobs:
         curl https://getsubstrate.io -sSf | bash -s -- --fast
         source ~/.cargo/env
 
-    - name: Build substrate repo with benchmarking feature
+    - name: Build substrate with runtime-benchmarks feature enabled
       run: cargo build --release --features=runtime-benchmarks --manifest-path substrate/bin/node/cli/Cargo.toml
 
-    - name: Upload Release Asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Upload binaries to release
+      uses: svenstaro/upload-release-action@v1-release
       with:
-        upload_url: https://uploads.github.com/repos/w3f/substrate-benchmarks-role/releases/25646062/assets{?name,label}
-        asset_path: substrate/target/release/substrate
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: substrate/target/release/substrate
         asset_name: substrate
-        asset_content_type: application/x-binary
+        tag: substrate-binary
+        overwrite: true
