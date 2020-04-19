@@ -12,22 +12,40 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Prepare environment
-      run: |
-        curl https://getsubstrate.io -sSf | bash -s -- --fast
-        source ~/.cargo/env
-
-    - name: Cache cargo build
-      uses: actions/cache@v1
-      with:
-        path: substrate/target
-        key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
-
     - name: Clone substrate repo
       uses: actions/checkout@v2
       with:
         repository: paritytech/substrate
         path: substrate
+
+    - name: Cache Rust binaries
+      uses: actions/cache@v1
+      with:
+        path: ~/.cargo/bin/
+        key: ${{ runner.os }}-cargo-bins-${{ hashFiles('substrate/Cargo.lock') }}
+
+    - name: Cache cargo registry
+      uses: actions/cache@v1
+      with:
+        path: ~/.cargo/registry
+        key: ${{ runner.os }}-cargo-registry-${{ hashFiles('substrate/Cargo.lock') }}
+
+    - name: Cache cargo index
+      uses: actions/cache@v1
+      with:
+        path: ~/.cargo/git
+        key: ${{ runner.os }}-cargo-index-${{ hashFiles('substrate/Cargo.lock') }}
+
+    - name: Cache cargo build
+      uses: actions/cache@v1
+      with:
+        path: substrate/target
+        key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('substrate/Cargo.lock') }}
+
+    - name: Prepare environment
+      run: |
+        curl https://getsubstrate.io -sSf | bash -s -- --fast
+        source ~/.cargo/env
 
     - name: Build substrate repo with benchmarking feature
       run: cargo build --release --features=runtime-benchmarks --manifest-path substrate/bin/node/cli/Cargo.toml
