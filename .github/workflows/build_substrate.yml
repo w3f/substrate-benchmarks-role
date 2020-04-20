@@ -1,4 +1,4 @@
-name: Build substrate with runtime-benchmarks feature enable, publish as artifact
+name: Build substrate with runtime-benchmarks feature enabled and publish as release
 
 on:
   schedule:
@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
 
     steps:
     - name: Clone substrate repo
