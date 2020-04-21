@@ -8,5 +8,14 @@ platforms:
     image: ubuntu:19.10
 provisioner:
   name: ansible
+scenario:
+  name: default
+  test_sequence:
+    - destroy
+    - create
+    - converge
+  # - idempotence    
+    - lint
+    - verify
 verifier:
   name: ansible
