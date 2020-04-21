@@ -2,6 +2,8 @@
 - name: Converge
   hosts: all
   tasks:
-    - name: "Include polkadot-module-benchmarks"
+    - name: "Include polkadot-module-benchmarking"
       include_role:
-        name: "polkadot-module-benchmarks"
+        name: "polkadot-module-benchmarking"
+      vars:
+        scope: all

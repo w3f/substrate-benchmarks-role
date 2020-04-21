@@ -1,11 +1,12 @@
 ---
-benchmarks:
+balances_benchmarks:
   - ['pallet-balances', 'transfer'] # worst case
   - ['pallet-balances', 'transfer_best_case']
   - ['pallet-balances', 'transfer_keep_alive']
   - ['pallet-balances', 'set_balance']
   - ['pallet-balances', 'set_balance_killing']
-  #
+
+identity_benchmarks:
   - ['pallet-identity', 'add_registrar']
   - ['pallet-identity', 'set_identity']
   - ['pallet-identity', 'set_subs']
@@ -17,15 +18,18 @@ benchmarks:
   - ['pallet-identity', 'set_fields']
   - ['pallet-identity', 'provide_judgement']
   - ['pallet-identity', 'kill_identity']
-  #
+
+vesting_benchmarks:
   - ['pallet-vesting', 'vest_locked']
   - ['pallet-vesting', 'vest_not_locked']
   - ['pallet-vesting', 'vest_other_locked']
   - ['pallet-vesting', 'vest_other_not_locked']
   - ['pallet-vesting', 'vested_transfer']
-  #
+
+timestamp_benchmarks:
   - ['pallet-timestamp', 'set']
-  #
+
+staking_benchmarks:
   - ['pallet-staking', 'bond']
   - ['pallet-staking', 'bond_extra']
   - ['pallet-staking', 'unbond']
@@ -42,17 +46,19 @@ benchmarks:
   - ['pallet-staking', 'set_invulnerables']
   - ['pallet-staking', 'force_unstake']
   - ['pallet-staking', 'cancel_deferred_slash']
-  - ['pallet-staking', 'payout_validator']
-  - ['pallet-staking', 'payout_nominator']
+  - ['pallet-staking', 'payout_stakers']
   - ['pallet-staking', 'rebond']
   - ['pallet-staking', 'set_history_depth']
   - ['pallet-staking', 'reap_stash']
   - ['pallet-staking', 'new_era']
   - ['pallet-staking', 'do_slash']
-  #
+  - ['pallet-staking', 'payout_all']
+
+im_online_benchmarks:
   - ['pallet-im-online', 'heartbeat']
   - ['pallet-im-online', 'validate_unsigned']
-  #
+
+treasury_benchmarks:
   - ['pallet-treasury', 'propose_spend']
   - ['pallet-treasury', 'reject_proposal']
   - ['pallet-treasury', 'approve_proposal']
@@ -63,5 +69,50 @@ benchmarks:
   - ['pallet-treasury', 'close_tip']
   - ['pallet-treasury', 'on_initialize']
 
-# Generally there's no reason to adjust this
-remote_work_dir: '{{ansible_env.HOME}}/polkadot-module-benchmarking'
+democracy_benchmarks:
+  - ['pallet-democracy', 'propose']
+  - ['pallet-democracy', 'second']
+  - ['pallet-democracy', 'vote']
+  - ['pallet-democracy', 'proxy_vote']
+  - ['pallet-democracy', 'emergency_cancel']
+  - ['pallet-democracy', 'external_propose']
+  - ['pallet-democracy', 'external_propose_majority']
+  - ['pallet-democracy', 'external_propose_default']
+  - ['pallet-democracy', 'fast_track']
+  - ['pallet-democracy', 'veto_external']
+  - ['pallet-democracy', 'cancel_referendum']
+  - ['pallet-democracy', 'cancel_queued']
+  - ['pallet-democracy', 'open_proxy']
+  - ['pallet-democracy', 'activate_proxy']
+  - ['pallet-democracy', 'close_proxy']
+  - ['pallet-democracy', 'deactivate_proxy']
+  - ['pallet-democracy', 'delegate']
+  - ['pallet-democracy', 'undelegate']
+  - ['pallet-democracy', 'clear_public_proposals']
+  - ['pallet-democracy', 'note_preimage']
+  - ['pallet-democracy', 'note_imminent_preimage']
+  - ['pallet-democracy', 'reap_preimage']
+  - ['pallet-democracy', 'unlock']
+  - ['pallet-democracy', 'remote_vote']
+  - ['pallet-democracy', 'remote_other_vote']
+  - ['pallet-democracy', 'proxy_delegate']
+  - ['pallet-democracy', 'proxy_undelegate']
+  - ['pallet-democracy', 'proxy_remove_vote']
+
+offences_benchmarks:
+  - ['pallet-offences', 'report_offence']
+  - ['pallet-offences', 'on_initialize']
+
+session_benchmarks:
+  - ['pallet-session-benchmarking', 'set_keys']
+  - ['pallet-session-benchmarking', 'purge_keys']
+
+utility_benchmarks:
+  - ['pallet-utility', 'batch']
+  - ['pallet-utility', 'as_sub']
+  - ['pallet-utility', 'as_multi_create']
+  - ['pallet-utility', 'as_multi_approve']
+  - ['pallet-utility', 'as_multi_complete']
+  - ['pallet-utility', 'approve_as_multi_create']
+  - ['pallet-utility', 'approve_as_multi_approve']
+  - ['pallet-utility', 'cancel_as_multi']
