@@ -13,6 +13,12 @@
     name: "*"
     state: latest
 
+- name: add yarn repo on ubuntu
+  when: ansible_os_family == "Debian"
+  shell: |
+    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+
 - name: install required software (Debian)
   when: ansible_os_family == "Debian"
   become: true
@@ -21,13 +27,9 @@
       - util-linux
       - lsb-core
       - git
-      - yarnpkg
+      - yarn
     state: latest
     update_cache: true
-
-- name: additional setup on ubuntu
-  when: ansible_os_family == "Debian"
-  shell: ln -s /usr/bin/yarnpkg /usr/bin/yarn
 
 - name: install required software (RedHat)
   when: ansible_os_family == "RedHat"
