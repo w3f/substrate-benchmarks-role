@@ -20,8 +20,14 @@
     pkg:
       - util-linux
       - lsb-core
+      - git
+      - yarnpkg
     state: latest
     update_cache: true
+
+- name: additional setup on ubuntu
+  when: ansible_os_family == "Debian"
+  shell: ln -s /usr/bin/yarnpkg /usr/bin/yarn
 
 - name: install required software (RedHat)
   when: ansible_os_family == "RedHat"
@@ -30,6 +36,8 @@
     name:
       - util-linux
       - redhat-lsb-core
+      - git
+      - yarn
     state: latest
     update_cache: true
 
@@ -48,6 +56,11 @@
 - name: check benchmarking tool availability
   shell: |
     {{ansible_env.HOME}}/bench-tool benchmark --version
+
+- name: download log cleanup tool
+  git:
+    repo: https://github.com/shawntabrizi/substrate-graph-benchmarks
+    dest: ~/cleanup-tool
 
 # Collect information about the machine
 - name: collect date
@@ -79,6 +92,9 @@
 - name: run limited (balances & staking) benchmarks
   import_tasks: benchmark_limited.yml
   when: scope == "limited"
+
+- name: cleanup database logs, only save required info
+  shell: yarn --cwd ~/cleanup-tool/util clean ../../results
 
 # Collect the results
 - name: create local directory for results
