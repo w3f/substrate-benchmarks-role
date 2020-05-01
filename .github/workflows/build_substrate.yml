@@ -46,7 +46,7 @@ jobs:
       run: cargo build --release --features=runtime-benchmarks --manifest-path substrate/bin/node/cli/Cargo.toml
 
     - name: Parse substrate output to JSON format (list of available benchmarks)
-    - uses: actions/checkout@v2
+      uses: actions/checkout@v2
       run: |
         ./substrate/target/release/substrate benchmark --pallet "*" --extrinsic "*" --steps 0 > dump.txt
         python3 .github/tools/parse_benches.py dump.txt > available_benchmarks.json
