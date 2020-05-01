@@ -18,12 +18,6 @@ jobs:
         repository: paritytech/substrate
         path: substrate
 
-    - name: Cache Rust binaries
-      uses: actions/cache@v1
-      with:
-        path: ~/.cargo/bin/
-        key: ${{ runner.os }}-cargo-bins-${{ hashFiles('substrate/Cargo.lock') }}
-
     - name: Cache cargo registry
       uses: actions/cache@v1
       with:
