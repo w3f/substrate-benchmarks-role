@@ -4,25 +4,25 @@
       --chain dev\
       --execution=wasm\
       --wasm-execution=compiled\
-      --pallet {{item[0]}}\
-      --extrinsic {{item[1]}}\
+      --pallet {{item.pallet}}\
+      --extrinsic {{item.extrinsic}}\
       --raw\
       --steps {{benchmark_steps}}\
       --repeat {{benchmark_repeat}}\
-      > {{ansible_env.HOME}}/results/{{item[0]}}.{{item[1]}}.txt
+      > {{ansible_env.HOME}}/results/{{item.pallet}}.{{item.extrinsic}}.txt
 
     # capture db logs
     {{ansible_env.HOME}}/bench-tool benchmark\
       --chain dev\
       --execution=wasm\
       --wasm-execution=compiled\
-      --pallet {{item[0]}}\
-      --extrinsic {{item[1]}}\
+      --pallet {{item.pallet}}\
+      --extrinsic {{item.extrinsic}}\
       --steps {{benchmark_steps}}\
       --log state-trace=trace,benchmark=trace\
-      2> {{ansible_env.HOME}}/results/{{item[0]}}.{{item[1]}}.log
-  with_nested:
-    - '{{balances_benchmarks|
-      union(staking_benchmarks)}}'
+      2> {{ansible_env.HOME}}/results/{{item.pallet}}.{{item.extrinsic}}.log
+  vars:
+    temp: "{{ lookup('file', 'temp.json') }}"
+  loop: "{{ temp | json_query('[?pallet==`balances`] || [?pallet==`staking`]') }}"
   async: 0
   poll: 60
