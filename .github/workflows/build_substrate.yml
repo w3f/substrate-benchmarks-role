@@ -40,15 +40,30 @@ jobs:
       run: |
         curl https://getsubstrate.io -sSf | bash -s -- --fast
         source ~/.cargo/env
+        apt-get update && apt-get install python3
 
     - name: Build substrate with runtime-benchmarks feature enabled
       run: cargo build --release --features=runtime-benchmarks --manifest-path substrate/bin/node/cli/Cargo.toml
 
-    - name: Upload binaries to release
+    - name: Parse substrate output to JSON format (list of available benchmarks)
+      run: |
+        ./substrate/target/release/substrate benchmark --pallet "*" --extrinsic "*" --steps 0 > dump.txt
+        python3 .github/tools/parse_benches.py dump.txt > available_benchmarks.json
+
+    - name: Upload binaries to Release
       uses: svenstaro/upload-release-action@v1-release
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: substrate/target/release/substrate
         asset_name: substrate
-        tag: substrate-binary
+        tag: assets
+        overwrite: true
+
+    - name: Upload JSON list of available benchmarks to Release
+      uses: svenstaro/upload-release-action@v1-release
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: available_benchmarks.json
+        asset_name: available_benchmarks.json
+        tag: assets
         overwrite: true
