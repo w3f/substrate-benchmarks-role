@@ -45,6 +45,20 @@
     dest: '{{ansible_env.HOME}}/bench-tool'
     mode: 'u+x'
 
+- name: download list of available benchmarks
+  get_url:
+    url: '{{benchmarking_json_list}}'
+    dest: '{{ansible_env.HOME}}/available_benchmarks.json'
+
+- name: Slurp available benchmarks
+  slurp:
+    src: '{{ansible_env.HOME}}/available_benchmarks.json'
+  register: available_benchmarks
+
+- name: Decode base64 content
+  set_fact:
+    available_benchmarks: "{{ available_benchmarks['content'] | b64decode }}"
+
 - name: check benchmarking tool availability
   shell: |
     {{ansible_env.HOME}}/bench-tool benchmark --version
@@ -71,14 +85,20 @@
     src: files/DEVICE_INFO.j2
     dest: '{{ansible_env.HOME}}/results/DEVICE_INFO.md'
 
-# Run benchmarks depending on specified scope
-- name: run all benchmarks
-  import_tasks: benchmark_all.yml
+# Prepare query and run benchmarks
+- name: prepare query for all available benchmarks
   when: scope == "all"
+  set_fact:
+    query: "{{ available_benchmarks }}"
 
-- name: run limited (balances & staking) benchmarks
-  import_tasks: benchmark_limited.yml
+- name: prepare limited query for only `balances` and `staking` benchmarks
   when: scope == "limited"
+  set_fact:
+    query: "{{ available_benchmarks | json_query('[?pallet==`balances`]')|
+      union(available_benchmarks | json_query('[?pallet==`staking`]')) }}"
+
+- name: run benchmarks
+  import_tasks: benchmarks.yml
 
 # Collect the results
 - name: create local directory for results
