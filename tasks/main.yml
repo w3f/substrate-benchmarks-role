@@ -87,15 +87,15 @@
 
 # Prepare query and run benchmarks
 - name: prepare query for all available benchmarks
+  when: scope == "all"
   set_fact:
     query: "{{ available_benchmarks }}"
-  when: scope == "all"
 
 - name: prepare limited query for only `balances` and `staking` benchmarks
+  when: scope == "limited"
   set_fact:
     query: "{{ available_benchmarks | json_query('[?pallet==`balances`]')|
       union(available_benchmarks | json_query('[?pallet==`staking`]')) }}"
-  when: scope == "limited"
 
 - name: run  benchmarks
   import_tasks: benchmarks.yml
