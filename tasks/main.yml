@@ -97,7 +97,7 @@
     query: "{{ available_benchmarks | json_query('[?pallet==`balances`]')|
       union(available_benchmarks | json_query('[?pallet==`staking`]')) }}"
 
-- name: run  benchmarks
+- name: run benchmarks
   import_tasks: benchmarks.yml
 
 # Collect the results
