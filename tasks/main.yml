@@ -45,6 +45,20 @@
     dest: '{{ansible_env.HOME}}/bench-tool'
     mode: 'u+x'
 
+- name: download list of available benchmarks
+  get_url:
+    url: '{{benchmarking_json_list}}'
+    dest: '{{ansible_env.HOME}}/available_benchmarks.json'
+
+- name: Slurp available benchmarks
+  slurp:
+    src: '{{ansible_env.HOME}}/available_benchmarks.json'
+  register: available_benchmarks
+
+- name: Decode base64 content
+  set_fact:
+    available_benchmarks: "{{ available_benchmarks['content'] | b64decode }}"
+
 - name: check benchmarking tool availability
   shell: |
     {{ansible_env.HOME}}/bench-tool benchmark --version
@@ -75,10 +89,14 @@
 - name: run all benchmarks
   import_tasks: benchmark_all.yml
   when: scope == "all"
+  vars:
+    available_benchmarks: available_benchmarks
 
 - name: run limited (balances & staking) benchmarks
   import_tasks: benchmark_limited.yml
   when: scope == "limited"
+  vars:
+    available_benchmarks: available_benchmarks
 
 # Collect the results
 - name: create local directory for results

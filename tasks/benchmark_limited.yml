@@ -21,8 +21,8 @@
       --steps {{benchmark_steps}}\
       --log state-trace=trace,benchmark=trace\
       2> {{ansible_env.HOME}}/results/{{item.pallet}}.{{item.extrinsic}}.log
-  vars:
-    temp: "{{ lookup('file', 'temp.json') }}"
-  loop: "{{ temp | json_query('[?pallet==`balances`] || [?pallet==`staking`]') }}"
+  loop:
+    - "{{ available_benchmarks | json_query('[?pallet==`balances`]')|
+      union(available_benchmarks | json_query('[?pallet==`staking`]')) }}"
   async: 0
   poll: 60

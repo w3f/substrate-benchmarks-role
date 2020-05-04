@@ -21,8 +21,6 @@
       --steps {{benchmark_steps}}\
       --log state-trace=trace,benchmark=trace\
       2> {{ansible_env.HOME}}/results/{{item.pallet}}.{{item.extrinsic}}.log
-  vars:
-    temp: "{{ lookup('file', 'temp.json') }}"
-  loop: '{{ temp }}'
+  loop: "{{ available_benchmarks }}"
   async: 0
   poll: 60
