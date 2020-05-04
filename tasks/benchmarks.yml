@@ -21,6 +21,6 @@
       --steps {{benchmark_steps}}\
       --log state-trace=trace,benchmark=trace\
       2> {{ansible_env.HOME}}/results/{{item.pallet}}.{{item.extrinsic}}.log
-  loop: "{{ available_benchmarks }}"
+  loop: "{{ query }}"
   async: 0
   poll: 60

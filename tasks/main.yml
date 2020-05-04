@@ -85,18 +85,20 @@
     src: files/DEVICE_INFO.j2
     dest: '{{ansible_env.HOME}}/results/DEVICE_INFO.md'
 
-# Run benchmarks depending on specified scope
-- name: run all benchmarks
-  import_tasks: benchmark_all.yml
+# Prepare query and run benchmarks
+- name: prepare query for all available benchmarks
+  set_fact:
+    query: "{{ available_benchmarks }}"
   when: scope == "all"
-  vars:
-    available_benchmarks: available_benchmarks
 
-- name: run limited (balances & staking) benchmarks
-  import_tasks: benchmark_limited.yml
+- name: prepare limited query for only `balances` and `staking` benchmarks
+  set_fact:
+    query: "{{ available_benchmarks | json_query('[?pallet==`balances`]')|
+      union(available_benchmarks | json_query('[?pallet==`staking`]')) }}"
   when: scope == "limited"
-  vars:
-    available_benchmarks: available_benchmarks
+
+- name: run  benchmarks
+  import_tasks: benchmarks.yml
 
 # Collect the results
 - name: create local directory for results
