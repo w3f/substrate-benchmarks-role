@@ -53,13 +53,13 @@
 
 - name: download trie benchmarking tool
   get_url:
-    url: '{{benchmarking_trie_url}}'
-    dest: '{{ansible_env.HOME}}/trie-tool'
+    url: '{{benchmarking_node_bench_url}}'
+    dest: '{{ansible_env.HOME}}/node-bench'
     mode: 'u+x'
 
 - name: check trie benchmarking tool availability
   shell: |
-    {{ansible_env.HOME}}/trie-tool trie --version
+    {{ansible_env.HOME}}/node-bench trie --version
 
 - name: download list of available benchmarks
   get_url:

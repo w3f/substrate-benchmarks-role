@@ -1,5 +1,5 @@
 run_module_benchmarks: false
 capture_module_db_logs: false
-run_trie_benchmarks: false
-run_block_import_benchmarks: false
-run_filesystem_io_benchmarks: false
+run_node_benchmarks: true
+run_filesystem_io_benchmarks: true
+scope: all

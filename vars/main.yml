@@ -1,5 +1,5 @@
 benchmarking_binary_url: 'https://github.com/w3f/substrate-benchmarks-role/releases/download/assets/substrate'
 benchmarking_json_list: 'https://github.com/w3f/substrate-benchmarks-role/releases/download/assets/available_benchmarks.json'
-benchmarking_trie_url: 'https://github.com/w3f/substrate-benchmarks-role/releases/download/assets/node-bench'
+benchmarking_node_bench_url: 'https://github.com/w3f/substrate-benchmarks-role/releases/download/assets/node-bench'
 benchmark_steps: 10
 benchmark_repeat: 10
