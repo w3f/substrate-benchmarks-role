@@ -44,15 +44,15 @@ jobs:
 
     - name: Build substrate with runtime-benchmarks feature enabled
       run: |
-        cargo build -p node-cli --release --features=runtime-benchmarks
-        cargo build -p node-bench --release
+        cargo build --manifest-path substrate/bin/node/cli/Cargo.toml --release --features=runtime-benchmarks
+        cargo build --manifest-path substrate/bin/node/bench/Cargo.toml --release
 
     - name: Checkout local repo for parsing tool
       uses: actions/checkout@v2
       with:
         path: main
 
-    - name: Parse substrate output to JSON format (list of available benchmarks)
+    - name: Parse substrate output to JSON format (list of module benchmarks)
       run: |
         ./substrate/target/release/substrate benchmark --pallet "*" --extrinsic "*" --steps 0 > dump.txt
         python3 main/.github/tools/parse_benches.py dump.txt > module_benchmarks.json
@@ -75,7 +75,7 @@ jobs:
         tag: assets
         overwrite: true
 
-    - name: Upload JSON list of available benchmarks to Release
+    - name: Upload JSON list of module benchmarks to Release
       uses: svenstaro/upload-release-action@v1-release
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
