@@ -6,4 +6,4 @@ run_filesystem_io_benchmarks: true
 # Set `scope` to `limited` in order to only run
 # `balances` and `staking` module benchmarks.
 #
-# scope: limited
+#scope: limited

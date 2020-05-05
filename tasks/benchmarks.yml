@@ -50,7 +50,7 @@
   when:
     - run_node_benchmarks
   shell: |
-    {{ansible_env.HOME}}/node-bench\
+    {{ansible_env.HOME}}/node-bench --json\
       > {{ansible_env.HOME}}/results/node_benchmarks.txt
   async: 0
   poll: 60
