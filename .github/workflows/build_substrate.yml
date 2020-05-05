@@ -43,7 +43,9 @@ jobs:
         sudo apt-get update && sudo apt-get install python3
 
     - name: Build substrate with runtime-benchmarks feature enabled
-      run: cargo build --release --features=runtime-benchmarks --manifest-path substrate/bin/node/cli/Cargo.toml
+      run: |
+        cargo build -p node-cli --release --features=runtime-benchmarks
+        cargo build -p node-bench --release
 
     - name: Checkout local repo for parsing tool
       uses: actions/checkout@v2
@@ -55,12 +57,21 @@ jobs:
         ./substrate/target/release/substrate benchmark --pallet "*" --extrinsic "*" --steps 0 > dump.txt
         python3 main/.github/tools/parse_benches.py dump.txt > available_benchmarks.json
 
-    - name: Upload binaries to Release
+    - name: Upload node-cli to Release
       uses: svenstaro/upload-release-action@v1-release
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: substrate/target/release/substrate
         asset_name: substrate
+        tag: assets
+        overwrite: true
+
+    - name: Upload node-bench to Release
+      uses: svenstaro/upload-release-action@v1-release
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: substrate/target/release/node-bench
+        asset_name: node-bench
         tag: assets
         overwrite: true
 
