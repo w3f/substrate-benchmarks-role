@@ -44,8 +44,8 @@ jobs:
 
     - name: Build substrate with runtime-benchmarks feature enabled
       run: |
-        cargo build -p node-cli --release --features=runtime-benchmarks
-        cargo build -p node-bench --release
+        cargo build --manifest-path substrate/bin/node/cli/Cargo.toml --release --features=runtime-benchmarks
+        cargo build --manifest-path substrate/bin/node/bench/Cargo.toml --release
 
     - name: Checkout local repo for parsing tool
       uses: actions/checkout@v2
