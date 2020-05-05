@@ -20,6 +20,7 @@
     pkg:
       - util-linux
       - lsb-core
+      - fio
     state: latest
     update_cache: true
 
@@ -30,6 +31,7 @@
     name:
       - util-linux
       - redhat-lsb-core
+      - fio
     state: latest
     update_cache: true
 
@@ -39,11 +41,25 @@
     path: '{{ansible_env.HOME}}/results'
     state: directory
 
-- name: download benchmarking tool
+- name: download module benchmarking tool
   get_url:
     url: '{{benchmarking_binary_url}}'
     dest: '{{ansible_env.HOME}}/bench-tool'
     mode: 'u+x'
+
+- name: check module benchmarking tool availability
+  shell: |
+    {{ansible_env.HOME}}/bench-tool benchmark --version
+
+- name: download trie benchmarking tool
+  get_url:
+    url: '{{benchmarking_trie_url}}'
+    dest: '{{ansible_env.HOME}}/trie-tool'
+    mode: 'u+x'
+
+- name: check trie benchmarking tool availability
+  shell: |
+    {{ansible_env.HOME}}/trie-tool trie --version
 
 - name: download list of available benchmarks
   get_url:
@@ -85,19 +101,8 @@
     src: files/DEVICE_INFO.j2
     dest: '{{ansible_env.HOME}}/results/DEVICE_INFO.md'
 
-# Prepare query and run benchmarks
-- name: prepare query for all available benchmarks
-  when: scope == "all"
-  set_fact:
-    query: "{{ available_benchmarks }}"
-
-- name: prepare limited query for only `balances` and `staking` benchmarks
-  when: scope == "limited"
-  set_fact:
-    query: "{{ available_benchmarks | json_query('[?pallet==`balances`]')|
-      union(available_benchmarks | json_query('[?pallet==`staking`]')) }}"
-
-- name: run benchmarks
+# Import file which actually contains the benchmarks
+- name: import benchmarking tasks
   import_tasks: benchmarks.yml
 
 # Collect the results

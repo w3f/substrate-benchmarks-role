@@ -1,4 +1,28 @@
-- name: run all benchmarks and capture db logs
+# All possible types of benchmarks for Substrate to run.
+# Each type can be enabled/disabled in `defaults/main.yml`.
+
+# If `scope` says to run all the benchmarks,
+# then pass the whole JSON input to `query`.
+- name: prepare query for all available benchmarks
+  when:
+    - run_module_benchmarks
+    - "{{ scope == 'all' | default(true) }}"
+  set_fact:
+    query: "{{ available_benchmarks }}"
+
+# If `scope` says to only run a limited amount,
+# then filter the JSON file based on the specified pallets.
+- name: prepare limited query for only `balances` and `staking` benchmarks
+  when:
+    - run_module_benchmarks
+    - "{{ scope == 'limited' | default(false) }}"
+  set_fact:
+    query: "{{ available_benchmarks | json_query('[?pallet==`balances`]')|
+      union(available_benchmarks | json_query('[?pallet==`staking`]')) }}"
+
+- name: run module benchmarks
+  when:
+    - run_module_benchmarks
   shell: |
     {{ansible_env.HOME}}/bench-tool benchmark\
       --chain dev\
@@ -10,8 +34,14 @@
       --steps {{benchmark_steps}}\
       --repeat {{benchmark_repeat}}\
       > {{ansible_env.HOME}}/results/{{item.pallet}}.{{item.extrinsic}}.txt
+  loop: "{{ query }}"
+  async: 0
+  poll: 60
 
-    # capture db logs
+- name: capture db logs
+  when:
+    - capture_module_db_logs
+  shell: |
     {{ansible_env.HOME}}/bench-tool benchmark\
       --chain dev\
       --execution=wasm\
@@ -24,3 +54,41 @@
   loop: "{{ query }}"
   async: 0
   poll: 60
+
+- name: run trie benchmarks
+  when:
+    - run_trie_benchmarks
+  shell: |
+    {{ansible_env.HOME}}/trie-tool trie --json
+      > {{ansible_env.HOME}}/results/trie_benchmarks.txt
+
+- name: run block import benchmarks
+  when:
+    - run_block_import_benchmarks
+  shell: |
+    {{ansible_env.HOME}}/trie-tool import::wasm::sr25519::{{ item }}
+      > {{ansible_env.HOME}}/results/block_import_{{ item }}_benchmarks.txt
+  loop:
+    - empty
+    - small
+    - medium
+    - large
+    - full
+
+- name: run read/write filesystem performance tool
+  when:
+    - run_filesystem_io_benchmarks
+  shell: |
+    fio\
+      --randrepeat=1\
+      --ioengine=posixaio\
+      --direct=1\
+      --gtod_reduce=1\
+      --name=test\
+      --filename=test\
+      --bs=4k\
+      --iodepth=64\
+      --size=4G\
+      --readwrite=randrw\
+      --rwmixread=75\
+      > {{ansible_env.HOME}}/results/filesystem_io.txt
