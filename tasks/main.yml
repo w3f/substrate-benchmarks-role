@@ -43,17 +43,17 @@
 
 - name: download module benchmarking tool
   get_url:
-    url: '{{benchmarking_binary_url}}'
-    dest: '{{ansible_env.HOME}}/bench-tool'
+    url: '{{module_bench_binary_url}}'
+    dest: '{{ansible_env.HOME}}/module-bench'
     mode: 'u+x'
 
 - name: check module benchmarking tool availability
   shell: |
-    {{ansible_env.HOME}}/bench-tool benchmark --version
+    {{ansible_env.HOME}}/module-bench benchmark --version
 
 - name: download trie benchmarking tool
   get_url:
-    url: '{{benchmarking_node_bench_url}}'
+    url: '{{node_bench_binary_url}}'
     dest: '{{ansible_env.HOME}}/node-bench'
     mode: 'u+x'
 
@@ -63,21 +63,21 @@
 
 - name: download list of available benchmarks
   get_url:
-    url: '{{benchmarking_json_list}}'
-    dest: '{{ansible_env.HOME}}/available_benchmarks.json'
+    url: '{{module_json_list}}'
+    dest: '{{ansible_env.HOME}}/module_benchmarks.json'
 
 - name: Slurp available benchmarks
   slurp:
-    src: '{{ansible_env.HOME}}/available_benchmarks.json'
-  register: available_benchmarks
+    src: '{{ansible_env.HOME}}/module_benchmarks.json'
+  register: module_benchmarks
 
 - name: Decode base64 content
   set_fact:
-    available_benchmarks: "{{ available_benchmarks['content'] | b64decode }}"
+    module_benchmarks: "{{ module_benchmarks['content'] | b64decode }}"
 
 - name: check benchmarking tool availability
   shell: |
-    {{ansible_env.HOME}}/bench-tool benchmark --version
+    {{ansible_env.HOME}}/module-bench benchmark --version
 
 # Collect information about the machine
 - name: collect date

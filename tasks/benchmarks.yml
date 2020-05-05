@@ -1,10 +1,6 @@
 # All possible types of benchmarks for Substrate to run.
 # Each type can be enabled/disabled in `defaults/main.yml`.
 
-- name: prepare query for all available benchmarks
-  set_fact:
-    query: "{{ available_benchmarks }}"
-
 # If `scope` says to only run a limited amount,
 # then filter the JSON file based on the specified pallets.
 - name: prepare limited query for only `balances` and `staking` benchmarks
@@ -12,24 +8,24 @@
     - scope is defined
     - scope == "limited"
   set_fact:
-    query: "{{ available_benchmarks | json_query('[?pallet==`balances`]')|
-      union(available_benchmarks | json_query('[?pallet==`staking`]')) }}"
+    module_benchmarks: "{{ module_benchmarks | json_query('[?pallet==`balances`]')|
+      union(module_benchmarks | json_query('[?pallet==`staking`]')) }}"
 
 - name: run module benchmarks
   when:
     - run_module_benchmarks
   shell: |
-    {{ansible_env.HOME}}/bench-tool benchmark\
+    {{ansible_env.HOME}}/module-bench benchmark\
       --chain dev\
       --execution=wasm\
       --wasm-execution=compiled\
       --pallet {{item.pallet}}\
       --extrinsic {{item.extrinsic}}\
       --raw\
-      --steps {{benchmark_steps}}\
-      --repeat {{benchmark_repeat}}\
+      --steps {{steps}}\
+      --repeat {{repeat}}\
       > {{ansible_env.HOME}}/results/{{item.pallet}}.{{item.extrinsic}}.txt
-  loop: "{{ query }}"
+  loop: "{{ module_benchmarks }}"
   async: 0
   poll: 60
 
@@ -37,16 +33,16 @@
   when:
     - capture_module_db_logs
   shell: |
-    {{ansible_env.HOME}}/bench-tool benchmark\
+    {{ansible_env.HOME}}/module-bench benchmark\
       --chain dev\
       --execution=wasm\
       --wasm-execution=compiled\
       --pallet {{item.pallet}}\
       --extrinsic {{item.extrinsic}}\
-      --steps {{benchmark_steps}}\
+      --steps {{steps}}\
       --log state-trace=trace,benchmark=trace\
       2> {{ansible_env.HOME}}/results/{{item.pallet}}.{{item.extrinsic}}.log
-  loop: "{{ query }}"
+  loop: "{{ module_benchmarks }}"
   async: 0
   poll: 60
 
@@ -59,7 +55,7 @@
   async: 0
   poll: 60
 
-- name: run read/write filesystem performance tool
+- name: run read/write filesystem benchmark tool
   when:
     - run_filesystem_io_benchmarks
   shell: |
@@ -75,6 +71,6 @@
       --size=4G\
       --readwrite=randrw\
       --rwmixread=75\
-      > {{ansible_env.HOME}}/results/filesystem_io.txt
+      > {{ansible_env.HOME}}/results/filesystem_io_benchmarks.txt
   async: 0
   poll: 60

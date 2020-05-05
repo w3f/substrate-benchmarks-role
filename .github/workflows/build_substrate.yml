@@ -55,7 +55,7 @@ jobs:
     - name: Parse substrate output to JSON format (list of available benchmarks)
       run: |
         ./substrate/target/release/substrate benchmark --pallet "*" --extrinsic "*" --steps 0 > dump.txt
-        python3 main/.github/tools/parse_benches.py dump.txt > available_benchmarks.json
+        python3 main/.github/tools/parse_benches.py dump.txt > module_benchmarks.json
 
     - name: Upload node-cli to Release
       uses: svenstaro/upload-release-action@v1-release
@@ -79,7 +79,7 @@ jobs:
       uses: svenstaro/upload-release-action@v1-release
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: available_benchmarks.json
-        asset_name: available_benchmarks.json
+        file: module_benchmarks.json
+        asset_name: module_benchmarks.json
         tag: assets
         overwrite: true
