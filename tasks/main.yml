@@ -20,6 +20,7 @@
     pkg:
       - util-linux
       - lsb-core
+      - fio
     state: latest
     update_cache: true
 
@@ -30,6 +31,7 @@
     name:
       - util-linux
       - redhat-lsb-core
+      - fio
     state: latest
     update_cache: true
 
@@ -39,29 +41,43 @@
     path: '{{ansible_env.HOME}}/results'
     state: directory
 
-- name: download benchmarking tool
+- name: download module benchmarking tool
   get_url:
-    url: '{{benchmarking_binary_url}}'
-    dest: '{{ansible_env.HOME}}/bench-tool'
+    url: '{{module_bench_binary_url}}'
+    dest: '{{ansible_env.HOME}}/module-bench'
     mode: 'u+x'
+
+- name: check module benchmarking tool availability
+  shell: |
+    {{ansible_env.HOME}}/module-bench benchmark --version
+
+- name: download trie benchmarking tool
+  get_url:
+    url: '{{node_bench_binary_url}}'
+    dest: '{{ansible_env.HOME}}/node-bench'
+    mode: 'u+x'
+
+- name: check trie benchmarking tool availability
+  shell: |
+    {{ansible_env.HOME}}/node-bench trie --version
 
 - name: download list of available benchmarks
   get_url:
-    url: '{{benchmarking_json_list}}'
-    dest: '{{ansible_env.HOME}}/available_benchmarks.json'
+    url: '{{module_json_list}}'
+    dest: '{{ansible_env.HOME}}/module_benchmarks.json'
 
 - name: Slurp available benchmarks
   slurp:
-    src: '{{ansible_env.HOME}}/available_benchmarks.json'
-  register: available_benchmarks
+    src: '{{ansible_env.HOME}}/module_benchmarks.json'
+  register: module_benchmarks
 
 - name: Decode base64 content
   set_fact:
-    available_benchmarks: "{{ available_benchmarks['content'] | b64decode }}"
+    module_benchmarks: "{{ module_benchmarks['content'] | b64decode }}"
 
 - name: check benchmarking tool availability
   shell: |
-    {{ansible_env.HOME}}/bench-tool benchmark --version
+    {{ansible_env.HOME}}/module-bench benchmark --version
 
 # Collect information about the machine
 - name: collect date
@@ -85,19 +101,8 @@
     src: files/DEVICE_INFO.j2
     dest: '{{ansible_env.HOME}}/results/DEVICE_INFO.md'
 
-# Prepare query and run benchmarks
-- name: prepare query for all available benchmarks
-  when: scope == "all"
-  set_fact:
-    query: "{{ available_benchmarks }}"
-
-- name: prepare limited query for only `balances` and `staking` benchmarks
-  when: scope == "limited"
-  set_fact:
-    query: "{{ available_benchmarks | json_query('[?pallet==`balances`]')|
-      union(available_benchmarks | json_query('[?pallet==`staking`]')) }}"
-
-- name: run benchmarks
+# Import file which actually contains the benchmarks
+- name: import benchmarking tasks
   import_tasks: benchmarks.yml
 
 # Collect the results

@@ -1,4 +1,5 @@
-benchmarking_binary_url: 'https://github.com/w3f/substrate-benchmarks-role/releases/download/assets/substrate'
-benchmarking_json_list: 'https://github.com/w3f/substrate-benchmarks-role/releases/download/assets/available_benchmarks.json'
-benchmark_steps: 10
-benchmark_repeat: 10
+module_bench_binary_url: 'https://github.com/w3f/substrate-benchmarks-role/releases/download/assets/substrate'
+module_json_list: 'https://github.com/w3f/substrate-benchmarks-role/releases/download/assets/module_benchmarks.json'
+node_bench_binary_url: 'https://github.com/w3f/substrate-benchmarks-role/releases/download/assets/node-bench'
+steps: 10
+repeat: 10

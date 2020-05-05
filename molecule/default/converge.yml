@@ -5,5 +5,3 @@
     - name: "Include substrate-benchmarks-role"
       include_role:
         name: "substrate-benchmarks-role"
-      vars:
-        scope: all
