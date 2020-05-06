@@ -50,8 +50,8 @@
   when:
     - run_node_benchmarks
   shell: |
-    {{ansible_env.HOME}}/node-bench {{ item }}\
-      > {{ansible_env.HOME}}/results/node_benchmarks_{{ item | replace('::','_') }}.txt
+    {{ansible_env.HOME}}/node-bench {{ item }} --json\
+      2> {{ansible_env.HOME}}/results/node_benchmarks_{{ item | replace('::','_') }}.txt
   async: 0
   loop:
     - '::node::import::wasm::sr25519::transfer_keep_alive::large'
