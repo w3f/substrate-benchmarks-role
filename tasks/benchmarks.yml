@@ -50,9 +50,20 @@
   when:
     - run_node_benchmarks
   shell: |
-    {{ansible_env.HOME}}/node-bench\
-      > {{ansible_env.HOME}}/results/node_benchmarks.txt
+    {{ansible_env.HOME}}/node-bench {{ item }}\
+      > {{ansible_env.HOME}}/results/node_benchmarks_{{ item | replace('::','_') }}.txt
   async: 0
+  loop:
+    - '::node::import::wasm::sr25519::transfer_keep_alive::large'
+    - '::node::import::wasm::sr25519::transfer_reaping::large'
+    - '::node::import::wasm::sr25519::noop::large'
+    - '::node::import::native::sr25519::transfer_keep_alive::large'
+    - '::node::import::native::sr25519::transfer_reaping::large'
+    - '::node::import::native::sr25519::noop::large'
+    - '::trie::read::large'
+    - '::trie::read::large'
+    - '::trie::write::large'
+    - '::trie::write::large'
   poll: 60
 
 - name: run read/write filesystem benchmark tool

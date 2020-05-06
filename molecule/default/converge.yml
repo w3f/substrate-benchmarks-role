@@ -5,3 +5,7 @@
     - name: "Include substrate-benchmarks-role"
       include_role:
         name: "substrate-benchmarks-role"
+      vars:
+        scope: limited
+        steps: 1
+        repeat: 1
