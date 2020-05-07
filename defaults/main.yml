@@ -1,7 +1,7 @@
 run_module_benchmarks: true
 capture_module_db_logs: true
 run_node_benchmarks: true
-run_filesystem_io_benchmarks: true
+run_filesystem_io_benchmarks: false
 
 # Set `scope` to `limited` in order to only run
 # `balances` and `staking` module benchmarks.
