@@ -41,7 +41,7 @@
       --extrinsic {{item.extrinsic}}\
       --steps {{steps}}\
       --log state-trace=trace,benchmark=trace\
-      2> {{ansible_env.HOME}}/results/{{item.pallet}}.{{item.extrinsic}}.log
+      > {{ansible_env.HOME}}/results/{{item.pallet}}.{{item.extrinsic}}.log 2>&1
   loop: "{{ module_benchmarks }}"
   async: 0
   poll: 60
