@@ -24,7 +24,7 @@
       --raw\
       --steps {{steps}}\
       --repeat {{repeat}}\
-      > {{ansible_env.HOME}}/results/{{item.pallet}}.{{item.extrinsic}}.txt
+      > {{ansible_env.HOME}}/results/module_bench_{{item.pallet}}.{{item.extrinsic}}.txt
   loop: "{{ module_benchmarks }}"
   async: 0
   poll: 60
@@ -41,7 +41,7 @@
       --extrinsic {{item.extrinsic}}\
       --steps {{steps}}\
       --log state-trace=trace,benchmark=trace\
-      > {{ansible_env.HOME}}/results/{{item.pallet}}.{{item.extrinsic}}.log 2>&1
+      > {{ansible_env.HOME}}/results/db_logs_{{item.pallet}}.{{item.extrinsic}}.log 2>&1
   loop: "{{ module_benchmarks }}"
   async: 0
   poll: 60
@@ -51,7 +51,7 @@
     - run_node_benchmarks
   shell: |
     {{ansible_env.HOME}}/node-bench {{ item }} --json\
-      > {{ansible_env.HOME}}/results/node_benchmarks_{{ item | replace('::','_') }}.txt 2>&1
+      > {{ansible_env.HOME}}/results/node_bench_{{ item | replace('::','_') }}.txt 2>&1
   async: 0
   loop:
     - '::node::import::wasm::sr25519::transfer_keep_alive::large'
@@ -82,6 +82,6 @@
       --size=4G\
       --readwrite=randrw\
       --rwmixread=75\
-      > {{ansible_env.HOME}}/results/filesystem_io_benchmarks.txt
+      > {{ansible_env.HOME}}/results/fs_io_bench.txt
   async: 0
   poll: 60

@@ -1,5 +1,5 @@
 run_module_benchmarks: true
-capture_module_db_logs: true
+capture_module_db_logs: false
 run_node_benchmarks: true
 run_filesystem_io_benchmarks: false
 
