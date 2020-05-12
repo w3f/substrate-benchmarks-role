@@ -20,7 +20,7 @@
     pkg:
       - util-linux
       - lsb-core
-      - python-jmespath
+      - python3-jmespath
       - fio
     state: latest
     update_cache: true
